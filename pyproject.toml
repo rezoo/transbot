@@ -9,6 +9,11 @@ description = "Translate text from English to Japanese and vice versa"
 authors = [
     { name = "Masaki Saito", email = "rezoolab@gmail.com" }
 ]
+dependencies = [
+    "pynput>=1.7.7",
+    "pyperclip>=1.9.0",
+    "openai>=1.40.3",
+]
 
 # Define entry points for your application
 [project.scripts]
