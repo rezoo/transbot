@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transbot"
+version = "0.1.0"
+description = "Translate text from English to Japanese and vice versa"
+authors = [
+    { name = "Masaki Saito", email = "rezoolab@gmail.com" }
+]
+
+# Define entry points for your application
+[project.scripts]
+transbot = "transbot.main:main"
