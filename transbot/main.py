@@ -6,7 +6,9 @@ import pyperclip
 import openai
 
 
-context = """次の与えられた文章が英語であれば日本語に、日本語であれば簡単な英語に翻訳してください。ただし、「The translated and simplified version of your text in English is〜」などの言葉や、"The output is..."などの二重引用符で囲むなどの修飾は出力しないでください。単純に訳文のみ出力してください。
+context = """次の与えられた文章が英語であれば日本語に、日本語であれば簡単な英語に翻訳してください。
+ただし、「The translated and simplified version of your text in English is〜」などの言葉や、
+"The output is..."などの二重引用符で囲むなどの修飾は出力しないでください。単純に訳文のみ出力してください。
 ===
 {message}"""
 
@@ -40,7 +42,7 @@ class KeyboardMonitor:
         print("===== # Translating # =====")
         clipboard_content = str(pyperclip.paste())
         res = openai.chat.completions.create(
-        model="gpt-4o-2024-05-13",
+        model="gpt-4o-2024-08-06",
         messages=[
             {"role": "user", "content": context.format(
                 message=clipboard_content)}],
