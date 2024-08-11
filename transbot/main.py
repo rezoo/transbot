@@ -63,7 +63,7 @@ def main():
     args = parser.parse_args()
 
     monitor = KeyboardMonitor(action_duration=args.action_duration)
-    print("Running Translation Bot...")
+    print("Running Translation Bot... Press Cmd + C twice to translate!")
     monitor.start_monitoring()
 
 
