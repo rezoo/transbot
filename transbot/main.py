@@ -1,16 +1,19 @@
 import argparse
 import time
 
+from pydantic import BaseModel
 from pynput import keyboard
 import pyperclip
 import openai
 
 
-context = """次の与えられた文章が英語であれば日本語に、日本語であれば簡単な英語に翻訳してください。
-ただし、「The translated and simplified version of your text in English is〜」などの言葉や、
-"The output is..."などの二重引用符で囲むなどの修飾は出力しないでください。単純に訳文のみ出力してください。
-===
-{message}"""
+context = "Please translate the following text into Japanese" \
+    " if it is in English, or into simple English if it is in Japanese." \
+    "\n===\n{message}"
+
+
+class ResponseFormat(BaseModel):
+    translation_message: str
 
 
 class KeyboardMonitor:
@@ -21,6 +24,7 @@ class KeyboardMonitor:
         self.current_keys: set[keyboard.KeyCode] = set()
         self.last_command_c_time: float = 0.
         self.action_duration: float = action_duration
+        self.client = openai.OpenAI()
 
     def on_press(self, key: keyboard.KeyCode):
         if key in self.COMBINATION:
@@ -41,13 +45,22 @@ class KeyboardMonitor:
     def process_clipboard(self):
         print("===== # Translating # =====")
         clipboard_content = str(pyperclip.paste())
-        res = openai.chat.completions.create(
-        model="gpt-4o-2024-08-06",
-        messages=[
-            {"role": "user", "content": context.format(
-                message=clipboard_content)}],
-        )
-        print(res.choices[0].message.content)
+        completion = self.client.beta.chat.completions.parse(
+            model="gpt-4o-2024-08-06",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an excellent translator."},
+                {
+                    "role": "user",
+                    "content": context.format(message=clipboard_content)
+                }],
+            response_format=ResponseFormat)
+        message = completion.choices[0].message
+        if message.parsed:
+            print(message.parsed.translation_message)
+        else:
+            print(message.refusal)
         print("")
 
     def start_monitoring(self):
