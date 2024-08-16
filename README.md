@@ -22,7 +22,8 @@ Transbotは、バックグラウンドで動作し、選択した文章を瞬時
     cd transbot
     pip install -e .
     ```
-3. Transbotを停止するには、Ctrl-Cを押します。
+3. `OPENAI_API_KEY` の環境変数に、OpenAIから発行されたAPIキーを設定します。
+4. `transbot` で起動します。Transbotを停止するには、Ctrl-Cを押します。
 
 ## 注意事項
 
